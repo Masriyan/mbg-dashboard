@@ -1,0 +1,1584 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MBG INTEL DASHBOARD — Makan Bergizi Gratis 2024–2026</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:ital,wght@0,400;0,700;1,400&family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --bg-void: #050a0e;
+    --bg-deep: #080f14;
+    --bg-panel: #0d1820;
+    --bg-card: #101e28;
+    --bg-hover: #16273380;
+    --border: #1a3040;
+    --border-bright: #1f4060;
+    --green: #00e5a0;
+    --green-dim: #00b07a;
+    --green-glow: rgba(0,229,160,0.12);
+    --green-muted: rgba(0,229,160,0.06);
+    --amber: #f5a623;
+    --amber-dim: #c07a10;
+    --amber-glow: rgba(245,166,35,0.12);
+    --red: #ff4d6d;
+    --red-dim: #c0243c;
+    --red-glow: rgba(255,77,109,0.12);
+    --blue: #38bdf8;
+    --blue-glow: rgba(56,189,248,0.12);
+    --purple: #a78bfa;
+    --text-primary: #e0eff8;
+    --text-secondary: #6a95b0;
+    --text-muted: #3a6070;
+    --text-dim: #243545;
+    --mono: 'Space Mono', monospace;
+    --display: 'Syne', sans-serif;
+    --body: 'DM Sans', sans-serif;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--body);
+    font-size: 14px;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* SCAN LINES EFFECT */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 2px,
+      rgba(0,229,160,0.012) 2px,
+      rgba(0,229,160,0.012) 4px
+    );
+    pointer-events: none;
+    z-index: 9999;
+  }
+
+  /* GRID NOISE */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.025'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 9998;
+    opacity: 0.4;
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 200;
+    background: rgba(5,10,14,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    padding: 0 2rem;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .header-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .header-dot {
+    width: 8px; height: 8px;
+    background: var(--green);
+    border-radius: 50%;
+    animation: pulse-dot 2s infinite;
+    box-shadow: 0 0 8px var(--green);
+  }
+
+  @keyframes pulse-dot {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(0.8); }
+  }
+
+  .header-title {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--green);
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+  }
+
+  .header-meta {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    text-align: right;
+    line-height: 1.4;
+  }
+
+  .header-meta span {
+    color: var(--amber);
+  }
+
+  /* ─── HERO ─── */
+  .hero {
+    position: relative;
+    padding: 4rem 2rem 2.5rem;
+    border-bottom: 1px solid var(--border);
+    overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 30% 50%, rgba(0,229,160,0.04) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 80% 20%, rgba(56,189,248,0.03) 0%, transparent 70%);
+  }
+
+  .hero-grid-lines {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(var(--border) 1px, transparent 1px),
+      linear-gradient(90deg, var(--border) 1px, transparent 1px);
+    background-size: 60px 60px;
+    opacity: 0.3;
+    mask-image: radial-gradient(ellipse at center, black 20%, transparent 80%);
+  }
+
+  .hero-content { position: relative; z-index: 1; max-width: 1400px; margin: 0 auto; }
+
+  .hero-eyebrow {
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--green);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: inline-block;
+    width: 24px; height: 1px;
+    background: var(--green);
+  }
+
+  .hero h1 {
+    font-family: var(--display);
+    font-size: clamp(2.2rem, 5vw, 4rem);
+    font-weight: 800;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 .accent { color: var(--green); }
+  .hero h1 .dim { color: var(--text-secondary); font-weight: 400; }
+
+  .hero-desc {
+    font-size: 15px;
+    color: var(--text-secondary);
+    max-width: 680px;
+    margin-bottom: 2rem;
+    line-height: 1.7;
+  }
+
+  .data-notice {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(245,166,35,0.08);
+    border: 1px solid rgba(245,166,35,0.2);
+    border-radius: 4px;
+    padding: 8px 14px;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--amber);
+    letter-spacing: 0.05em;
+  }
+
+  .data-notice::before {
+    content: '⚠';
+    font-size: 12px;
+  }
+
+  /* ─── MAIN LAYOUT ─── */
+  .main-wrap {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+
+  /* ─── SECTION LABEL ─── */
+  .section-label {
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 2rem;
+  }
+
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--border);
+  }
+
+  /* ─── KPI GRID ─── */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+    margin-bottom: 0;
+  }
+
+  .kpi-card {
+    background: var(--bg-card);
+    padding: 1.5rem;
+    position: relative;
+    overflow: hidden;
+    transition: background 0.2s;
+  }
+
+  .kpi-card:hover { background: var(--bg-hover); }
+
+  .kpi-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+  }
+
+  .kpi-card.green::before { background: var(--green); }
+  .kpi-card.amber::before { background: var(--amber); }
+  .kpi-card.red::before { background: var(--red); }
+  .kpi-card.blue::before { background: var(--blue); }
+  .kpi-card.purple::before { background: var(--purple); }
+
+  .kpi-label {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    margin-bottom: 0.75rem;
+  }
+
+  .kpi-value {
+    font-family: var(--display);
+    font-size: 2rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 0.35rem;
+  }
+
+  .kpi-card.green .kpi-value { color: var(--green); }
+  .kpi-card.amber .kpi-value { color: var(--amber); }
+  .kpi-card.red .kpi-value { color: var(--red); }
+  .kpi-card.blue .kpi-value { color: var(--blue); }
+  .kpi-card.purple .kpi-value { color: var(--purple); }
+
+  .kpi-sub {
+    font-size: 11px;
+    color: var(--text-secondary);
+    line-height: 1.4;
+  }
+
+  /* ─── PANEL GRID ─── */
+  .panel-grid {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .panel-grid.cols-2 { grid-template-columns: 1fr 1fr; }
+  .panel-grid.cols-3 { grid-template-columns: 2fr 1fr 1fr; }
+  .panel-grid.cols-1-2 { grid-template-columns: 1fr 2fr; }
+
+  .panel {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .panel-header {
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .panel-title {
+    font-family: var(--display);
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--text-primary);
+  }
+
+  .panel-badge {
+    font-family: var(--mono);
+    font-size: 9px;
+    padding: 3px 8px;
+    border-radius: 3px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .badge-green { background: var(--green-muted); color: var(--green); border: 1px solid rgba(0,229,160,0.2); }
+  .badge-amber { background: var(--amber-glow); color: var(--amber); border: 1px solid rgba(245,166,35,0.2); }
+  .badge-red { background: var(--red-glow); color: var(--red); border: 1px solid rgba(255,77,109,0.2); }
+  .badge-blue { background: var(--blue-glow); color: var(--blue); border: 1px solid rgba(56,189,248,0.2); }
+
+  .panel-body { padding: 1.25rem; }
+
+  /* ─── CHART CONTAINERS ─── */
+  .chart-wrap {
+    position: relative;
+    width: 100%;
+  }
+
+  /* ─── PROGRESS BARS ─── */
+  .progress-item {
+    margin-bottom: 1rem;
+  }
+
+  .progress-label-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 5px;
+    font-size: 12px;
+  }
+
+  .progress-name { color: var(--text-secondary); }
+  .progress-val { font-family: var(--mono); font-size: 11px; }
+
+  .progress-track {
+    height: 6px;
+    background: var(--bg-panel);
+    border-radius: 3px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    position: relative;
+    transition: width 1.2s cubic-bezier(0.16,1,0.3,1);
+  }
+
+  .progress-fill.green { background: linear-gradient(90deg, var(--green-dim), var(--green)); }
+  .progress-fill.amber { background: linear-gradient(90deg, var(--amber-dim), var(--amber)); }
+  .progress-fill.red { background: linear-gradient(90deg, var(--red-dim), var(--red)); }
+  .progress-fill.blue { background: linear-gradient(90deg, #0ea5e9, var(--blue)); }
+
+  /* ─── DATA TABLE ─── */
+  .data-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  .data-table th {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    padding: 8px 12px;
+    text-align: left;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+  }
+
+  .data-table td {
+    padding: 9px 12px;
+    font-size: 12px;
+    border-bottom: 1px solid var(--bg-panel);
+    color: var(--text-secondary);
+    vertical-align: middle;
+  }
+
+  .data-table tr:last-child td { border-bottom: none; }
+  .data-table tr:hover td { background: var(--bg-hover); }
+
+  .data-table .val-green { color: var(--green); font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .data-table .val-amber { color: var(--amber); font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .data-table .val-red { color: var(--red); font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .data-table .val-blue { color: var(--blue); font-family: var(--mono); font-size: 11px; font-weight: 700; }
+  .data-table .val-white { color: var(--text-primary); font-family: var(--mono); font-size: 11px; }
+
+  /* ─── MINI STAT ROWS ─── */
+  .stat-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-panel);
+  }
+  .stat-row:last-child { border-bottom: none; }
+  .stat-row-label { font-size: 12px; color: var(--text-secondary); }
+  .stat-row-value { font-family: var(--mono); font-size: 12px; color: var(--text-primary); font-weight: 700; }
+
+  /* ─── RISK INDICATORS ─── */
+  .risk-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.75rem;
+  }
+
+  .risk-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .risk-item::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    opacity: 0.04;
+    pointer-events: none;
+  }
+
+  .risk-item.critical::after { background: var(--red); }
+  .risk-item.high::after { background: var(--amber); }
+  .risk-item.medium::after { background: var(--blue); }
+
+  .risk-level {
+    font-family: var(--mono);
+    font-size: 8px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+
+  .risk-level::before {
+    content: '';
+    display: inline-block;
+    width: 5px; height: 5px;
+    border-radius: 50%;
+  }
+
+  .risk-item.critical .risk-level { color: var(--red); }
+  .risk-item.critical .risk-level::before { background: var(--red); box-shadow: 0 0 6px var(--red); }
+  .risk-item.high .risk-level { color: var(--amber); }
+  .risk-item.high .risk-level::before { background: var(--amber); box-shadow: 0 0 6px var(--amber); }
+  .risk-item.medium .risk-level { color: var(--blue); }
+  .risk-item.medium .risk-level::before { background: var(--blue); box-shadow: 0 0 6px var(--blue); }
+
+  .risk-title {
+    font-family: var(--display);
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: var(--text-primary);
+  }
+
+  .risk-desc {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ─── SENTIMENT BARS ─── */
+  .sentiment-cluster {
+    padding: 10px 0;
+    border-bottom: 1px solid var(--bg-panel);
+  }
+  .sentiment-cluster:last-child { border-bottom: none; }
+  .sentiment-cluster-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .sentiment-tag {
+    font-family: var(--mono);
+    font-size: 8px;
+    padding: 2px 6px;
+    border-radius: 2px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+  .tag-pro { background: var(--green-muted); color: var(--green); }
+  .tag-con { background: var(--red-glow); color: var(--red); }
+  .sentiment-cluster-label { font-size: 11px; color: var(--text-secondary); flex: 1; margin: 0 10px; }
+  .sentiment-pct { font-family: var(--mono); font-size: 11px; color: var(--text-primary); }
+
+  /* ─── TIMELINE ─── */
+  .timeline {
+    position: relative;
+    padding-left: 2rem;
+  }
+
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 7px;
+    top: 6px;
+    bottom: 6px;
+    width: 1px;
+    background: linear-gradient(to bottom, var(--green), var(--border), transparent);
+  }
+
+  .timeline-item {
+    position: relative;
+    margin-bottom: 1.5rem;
+  }
+
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -1.75rem;
+    top: 5px;
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--bg-card);
+    border: 1.5px solid var(--border);
+    transition: border-color 0.2s;
+  }
+
+  .timeline-item.green::before { border-color: var(--green); background: var(--green); box-shadow: 0 0 8px var(--green); }
+  .timeline-item.amber::before { border-color: var(--amber); background: var(--amber); }
+  .timeline-item.red::before { border-color: var(--red); background: var(--red); }
+
+  .timeline-date {
+    font-family: var(--mono);
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin-bottom: 3px;
+    text-transform: uppercase;
+  }
+
+  .timeline-event {
+    font-size: 12px;
+    color: var(--text-secondary);
+    line-height: 1.5;
+  }
+
+  .timeline-event strong { color: var(--text-primary); }
+
+  /* ─── COMPLIANCE GAUGE ─── */
+  .compliance-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.75rem;
+  }
+
+  .compliance-item {
+    background: var(--bg-panel);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    text-align: center;
+  }
+
+  .compliance-number {
+    font-family: var(--display);
+    font-size: 1.8rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .compliance-label {
+    font-size: 11px;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+
+  /* ─── TABS ─── */
+  .tab-nav {
+    display: flex;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .tab-btn {
+    background: none;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.2s;
+    margin-bottom: -1px;
+  }
+
+  .tab-btn.active {
+    color: var(--green);
+    border-bottom-color: var(--green);
+  }
+
+  .tab-btn:hover:not(.active) { color: var(--text-secondary); }
+
+  .tab-panel { display: none; padding: 1.25rem; }
+  .tab-panel.active { display: block; }
+
+  /* ─── FOOTER ─── */
+  footer {
+    border-top: 1px solid var(--border);
+    padding: 2rem;
+    margin-top: 3rem;
+    font-family: var(--mono);
+    font-size: 10px;
+    color: var(--text-muted);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    justify-content: space-between;
+    align-items: flex-start;
+    max-width: 1400px;
+    margin: 3rem auto 0;
+  }
+
+  .footer-sources { line-height: 1.8; }
+  .footer-sources a { color: var(--text-muted); text-decoration: none; }
+  .footer-sources a:hover { color: var(--green); }
+
+  /* ─── SCROLL ANIMATIONS ─── */
+  .fade-in {
+    opacity: 0;
+    transform: translateY(16px);
+    animation: fadeInUp 0.5s ease forwards;
+  }
+
+  @keyframes fadeInUp {
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  /* COUNT UP */
+  .countup { display: inline-block; }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 900px) {
+    .panel-grid.cols-2,
+    .panel-grid.cols-3,
+    .panel-grid.cols-1-2 { grid-template-columns: 1fr; }
+    .risk-grid { grid-template-columns: 1fr; }
+    .compliance-grid { grid-template-columns: 1fr; }
+    .main-wrap { padding: 1rem; }
+    header { padding: 0 1rem; }
+    .hero { padding: 2.5rem 1rem 2rem; }
+    .kpi-grid { grid-template-columns: 1fr 1fr; }
+  }
+
+  @media (max-width: 520px) {
+    .kpi-grid { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ═══ -->
+<header>
+  <div class="header-brand">
+    <div class="header-dot"></div>
+    <span class="header-title">MBG · Intel Dashboard</span>
+  </div>
+  <div class="header-meta">
+    <div>LAST UPDATED: <span>15 MARET 2026</span></div>
+    <div>COVERAGE: <span>2024 – Q1 2026</span></div>
+  </div>
+</header>
+
+<!-- ═══ HERO ═══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid-lines"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">Analisis Komprehensif Kebijakan Publik</div>
+    <h1>
+      Program <span class="accent">Makan Bergizi</span><br>
+      <span class="dim">Gratis</span> — MBG
+    </h1>
+    <p class="hero-desc">
+      Dashboard analitik real-time yang merangkum data fiskal, operasional, rantai pasok,
+      kepatuhan, sentimen publik, dan risiko konstitusional Program MBG
+      di bawah Badan Gizi Nasional (BGN), 2024–2026.
+    </p>
+    <div class="data-notice">
+      SUMBER DATA SELURUHNYA DARI INTERNET — Laporan BGN, Kemenkeu, KPK, ICW, BPS, MBG Watch, Celios, J-PTIIK Unibraw · Diverifikasi 15 Mar 2026
+    </div>
+  </div>
+</section>
+
+<!-- ═══ MAIN CONTENT ═══ -->
+<div class="main-wrap">
+
+  <!-- KPI STATS -->
+  <div class="section-label">01 — Indikator Utama Program</div>
+  <div class="kpi-grid fade-in" style="animation-delay:0.05s">
+    <div class="kpi-card green">
+      <div class="kpi-label">Total Dana Terealisasi</div>
+      <div class="kpi-value"><span class="countup" data-target="96.9" data-suffix="T">0</span></div>
+      <div class="kpi-sub">Akumulasi APBN 2025–Q1 2026 (Rp Triliun)</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Total Penerima Manfaat</div>
+      <div class="kpi-value"><span class="countup" data-target="61.62" data-suffix="Jt">0</span></div>
+      <div class="kpi-sub">Jiwa terjangkau per 9 Maret 2026</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Pagu APBN 2026</div>
+      <div class="kpi-value"><span class="countup" data-target="335" data-suffix="T">0</span></div>
+      <div class="kpi-sub">Rp Triliun — terbesar program tunggal nondarurat</div>
+    </div>
+    <div class="kpi-card green">
+      <div class="kpi-label">Jaringan SPPG Aktif</div>
+      <div class="kpi-value"><span class="countup" data-target="25082" data-suffix="">0</span></div>
+      <div class="kpi-sub">Dapur Satuan Pelayanan Pemenuhan Gizi</div>
+    </div>
+    <div class="kpi-card blue">
+      <div class="kpi-label">Total Kontraktor/Supplier</div>
+      <div class="kpi-value"><span class="countup" data-target="61857" data-suffix="">0</span></div>
+      <div class="kpi-sub">Entitas pemasok & mitra logistik ekosistem MBG</div>
+    </div>
+    <div class="kpi-card red">
+      <div class="kpi-label">SPPG Ditangguhkan</div>
+      <div class="kpi-value"><span class="countup" data-target="1512" data-suffix="">0</span></div>
+      <div class="kpi-sub">Dapur dihentikan sementara di Jawa — 11 Mar 2026</div>
+    </div>
+    <div class="kpi-card amber">
+      <div class="kpi-label">Pagu Per Porsi</div>
+      <div class="kpi-value">Rp 10K</div>
+      <div class="kpi-sub">Anggaran per porsi makan — dinilai irasional oleh publik</div>
+    </div>
+    <div class="kpi-card purple">
+      <div class="kpi-label">Akurasi Analisis Sentimen</div>
+      <div class="kpi-value">96%</div>
+      <div class="kpi-sub">F1-Score IndoBERTweet — J-PTIIK Unibraw, Feb 2026</div>
+    </div>
+  </div>
+
+  <!-- ROW: BUDGET + SERAPAN -->
+  <div class="section-label" style="margin-top:2.5rem">02 — Postur Fiskal & Serapan Anggaran</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.1s">
+
+    <!-- Budget Chart -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Komparasi Pagu vs Realisasi (Rp Triliun)</span>
+        <span class="panel-badge badge-green">APBN 2025–2026</span>
+      </div>
+      <div class="panel-body">
+        <div class="chart-wrap" style="height:240px">
+          <canvas id="budgetChart"></canvas>
+        </div>
+        <div style="margin-top:1.25rem">
+          <div class="progress-item">
+            <div class="progress-label-row">
+              <span class="progress-name">Serapan 2025 (per 15 Des 2025)</span>
+              <span class="progress-val" style="color:var(--green)">74.6% — Rp 52.9T</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill green" style="width:74.6%"></div>
+            </div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label-row">
+              <span class="progress-name">Serapan 2026 (per 9 Mar 2026)</span>
+              <span class="progress-val" style="color:var(--amber)">13.1% — Rp 44T</span>
+            </div>
+            <div class="progress-track">
+              <div class="progress-fill amber" style="width:13.1%"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Fiscal Risk -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Proyeksi Risiko Makroekonomi</span>
+        <span class="panel-badge badge-red">⚠ STRESS TEST KEMENKEU</span>
+      </div>
+      <div class="panel-body">
+        <div class="stat-row">
+          <span class="stat-row-label">Batas Defisit Fiskal (Disiplin Pasca-Pandemi)</span>
+          <span class="stat-row-value" style="color:var(--green)">≤ 3.0% PDB</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Proyeksi Defisit (Skenario Risiko MBG)</span>
+          <span class="stat-row-value" style="color:var(--red)">3.6% PDB ⚠</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Kurs Rupiah — Level Psikologis</span>
+          <span class="stat-row-value" style="color:var(--amber)">Rp 17.000/USD</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Proyeksi Harga Minyak Dunia (Skenario Risiko)</span>
+          <span class="stat-row-value" style="color:var(--red)">$92–$104/bbl</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Anggaran MBG Masuk Pos Pendidikan</span>
+          <span class="stat-row-value" style="color:var(--red)">Rp 268T</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Realisasi Riil Anggaran Pendidikan (est.)</span>
+          <span class="stat-row-value" style="color:var(--amber)">~11.9% APBN</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Anggaran Konstitusional Pendidikan Minimum</span>
+          <span class="stat-row-value" style="color:var(--text-primary)">20% APBN (Ps. 31 UUD'45)</span>
+        </div>
+        <div style="margin-top:1rem;padding:10px;background:var(--red-glow);border:1px solid rgba(255,77,109,0.2);border-radius:6px">
+          <div style="font-family:var(--mono);font-size:9px;color:var(--red);letter-spacing:0.1em;margin-bottom:4px">⚠ KONTROVERSI FISKAL</div>
+          <div style="font-size:11px;color:var(--text-secondary);line-height:1.6">Rp 268T anggaran MBG diklasifikasikan sebagai "belanja pendidikan" dalam APBN 2026 — dikecam sebagai <em>penyelundupan hukum</em> oleh MBG Watch & P2G, kini dalam proses Judicial Review di Mahkamah Konstitusi.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW: Penerima + Supplier -->
+  <div class="section-label" style="margin-top:2rem">03 — Penerima Manfaat & Ekosistem Supplier</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.15s">
+
+    <!-- Beneficiary breakdown -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Distribusi Penerima Manfaat</span>
+        <span class="panel-badge badge-blue">61.62 JUTA JIWA</span>
+      </div>
+      <div class="panel-body">
+        <div class="chart-wrap" style="height:220px">
+          <canvas id="beneficiaryChart"></canvas>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="progress-item">
+            <div class="progress-label-row">
+              <span class="progress-name">Peserta Didik (PAUD–SMA + Pesantren)</span>
+              <span class="progress-val" style="color:var(--green)">~50 Juta (81.1%)</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill green" style="width:81.1%"></div></div>
+          </div>
+          <div class="progress-item">
+            <div class="progress-label-row">
+              <span class="progress-name">Non-Siswa (Bumil, Busui, Balita, Lansia)</span>
+              <span class="progress-val" style="color:var(--blue)">10.5 Juta (17.0%)</span>
+            </div>
+            <div class="progress-track"><div class="progress-fill blue" style="width:17%"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Supplier breakdown -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Kategori Supplier / Mitra MBG</span>
+        <span class="panel-badge badge-green">61.857 ENTITAS</span>
+      </div>
+      <div class="panel-body">
+        <div class="chart-wrap" style="height:220px">
+          <canvas id="supplierChart"></canvas>
+        </div>
+        <table class="data-table" style="margin-top:0.75rem">
+          <thead>
+            <tr><th>Kategori</th><th>Jumlah</th><th>Porsi</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>UMKM</td><td class="val-green">26,899</td><td class="val-white">43.5%</td></tr>
+            <tr><td>Supplier Perorangan</td><td class="val-green">26,713</td><td class="val-white">43.2%</td></tr>
+            <tr><td>Koperasi Umum</td><td class="val-blue">7,098</td><td class="val-white">11.5%</td></tr>
+            <tr><td>BUMDes</td><td class="val-amber">806</td><td class="val-white">1.3%</td></tr>
+            <tr><td>Kopdes Merah Putih</td><td class="val-amber">199</td><td class="val-white">0.3%</td></tr>
+            <tr><td>BUMDesma</td><td class="val-amber">82</td><td class="val-white">0.1%</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW: SPPG Compliance + Risk -->
+  <div class="section-label" style="margin-top:2rem">04 — Kepatuhan & Defisiensi Operasional SPPG</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.2s">
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Temuan Audit SPPG — Basis Penangguhan 11 Mar 2026</span>
+        <span class="panel-badge badge-red">1.512 DITANGGUHKAN</span>
+      </div>
+      <div class="panel-body">
+        <div class="chart-wrap" style="height:200px">
+          <canvas id="complianceChart"></canvas>
+        </div>
+        <div class="compliance-grid" style="margin-top:1rem">
+          <div class="compliance-item">
+            <div class="compliance-number" style="color:var(--red)">1,043</div>
+            <div class="compliance-label">SPPG tanpa<br>Sertifikat SLHS</div>
+          </div>
+          <div class="compliance-item">
+            <div class="compliance-number" style="color:var(--amber)">443</div>
+            <div class="compliance-label">SPPG tanpa<br>Instalasi IPAL</div>
+          </div>
+          <div class="compliance-item">
+            <div class="compliance-number" style="color:var(--blue)">175</div>
+            <div class="compliance-label">SPPG tanpa<br>fasilitas mess ahli gizi</div>
+          </div>
+        </div>
+        <div style="margin-top:1rem;font-size:11px;color:var(--text-muted);line-height:1.6;padding:10px;background:var(--bg-panel);border-radius:6px">
+          <strong style="color:var(--amber)">Provinsi terdampak:</strong> Banten, DI Yogyakarta, Jawa Barat, Jawa Tengah, Jawa Timur.
+          Keracunan massal tercatat di Riau (SD Muhammadiyah & TK Faturahman, 2025) dan Cianjur, Jabar.
+        </div>
+      </div>
+    </div>
+
+    <!-- Risk Indicators -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Peta Risiko Tata Kelola Program</span>
+        <span class="panel-badge badge-amber">KPK + ICW MONITORING</span>
+      </div>
+      <div class="panel-body">
+        <div class="risk-grid">
+          <div class="risk-item critical">
+            <div class="risk-level">CRITICAL</div>
+            <div class="risk-title">Korupsi & Mark-up Anggaran</div>
+            <div class="risk-desc">CRA mengidentifikasi potensi manipulasi biaya operasional & penyusutan kualitas bahan pangan untuk margin</div>
+          </div>
+          <div class="risk-item critical">
+            <div class="risk-level">CRITICAL</div>
+            <div class="risk-title">Patronase Politik Militer</div>
+            <div class="risk-desc">ICW temukan Letjen TNI aktif & purnawirawan Mayjen/Brigjen kuasai yayasan pengelola ratusan miliar kontrak MBG</div>
+          </div>
+          <div class="risk-item high">
+            <div class="risk-level">HIGH</div>
+            <div class="risk-title">Benturan Kepentingan Polri</div>
+            <div class="risk-desc">Yayasan Kemala Bhayangkari (Polri) kelola 1.179 dapur SPPG — Polri sekaligus APH yang seharusnya menyidik fraud</div>
+          </div>
+          <div class="risk-item high">
+            <div class="risk-level">HIGH</div>
+            <div class="risk-title">Gagal Bayar UMKM</div>
+            <div class="risk-desc">Penunggakan hampir Rp 1M kepada mitra Kalibata, Jakarta Selatan — supplier kecil terancam bangkrut</div>
+          </div>
+          <div class="risk-item high">
+            <div class="risk-level">HIGH</div>
+            <div class="risk-title">Defisit Fiskal &gt;3% PDB</div>
+            <div class="risk-desc">Proyeksi defisit 3.6% PDB jika harga minyak $104/bbl dan kurs Rp17.000/USD berlanjut</div>
+          </div>
+          <div class="risk-item medium">
+            <div class="risk-level">MEDIUM</div>
+            <div class="risk-title">Sengketa Konstitusional MK</div>
+            <div class="risk-desc">Judicial review UU APBN 2026 Pasal 22 ayat 2–3 — pemohon: MBG Watch, P2G, Celios</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW: Sentiment + Timeline -->
+  <div class="section-label" style="margin-top:2rem">05 — Analisis Sentimen & Timeline Kritis</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.25s">
+
+    <!-- Sentiment Analysis -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Peta Sentimen Publik — Twitter/X (Jul–Sep 2025)</span>
+        <span class="panel-badge badge-blue">INDOTWEET FINE-TUNING · UNIBRAW</span>
+      </div>
+      <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab(this,'tab-pro')">PRO (4 Klaster)</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-con')">KONTRA (4 Klaster)</button>
+        <button class="tab-btn" onclick="switchTab(this,'tab-radar')">Visualisasi</button>
+      </div>
+      <div id="tab-pro" class="tab-panel active">
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-pro">PRO</span>
+            <span class="sentiment-cluster-label">Manfaat gizi biologis & ketahanan kesehatan anak sejak dini</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-pro">PRO</span>
+            <span class="sentiment-cluster-label">Dukungan politis partisan terhadap kebijakan unggulan pemerintah</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-pro">PRO</span>
+            <span class="sentiment-cluster-label">Multiplier ekonomi: kebangkitan UMKM katering & lapangan kerja logistik</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-pro">PRO</span>
+            <span class="sentiment-cluster-label">Keberhasilan pemerataan MBG hingga wilayah marjinal (Papua dll.)</span>
+          </div>
+        </div>
+        <div style="margin-top:1rem;padding:10px;background:var(--green-muted);border-radius:6px;font-size:11px;color:var(--text-secondary)">
+          <strong style="color:var(--green)">Catatan metodologi:</strong> 1.512 tweet dikumpulkan. Macro F1-Score: 0.9641. Akurasi: 96% (epoch 10). Metode: IndoBERTweet + BERTopic K-Means.
+        </div>
+      </div>
+      <div id="tab-con" class="tab-panel">
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-con">KONTRA</span>
+            <span class="sentiment-cluster-label">Keracunan massal, buruknya higienitas vendor, menu monoton rendah protein</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-con">KONTRA</span>
+            <span class="sentiment-cluster-label">Beban fiskal berpotensi ditimpakan ke rakyat via kenaikan PPN & utang APBN</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-con">KONTRA</span>
+            <span class="sentiment-cluster-label">Kanibalisasi anggaran pendidikan & terlukainya kesejahteraan guru honorer</span>
+          </div>
+        </div>
+        <div class="sentiment-cluster">
+          <div class="sentiment-cluster-header">
+            <span class="sentiment-tag tag-con">KONTRA</span>
+            <span class="sentiment-cluster-label">Pagu Rp 10.000/porsi irasional di tengah inflasi komoditas pangan</span>
+          </div>
+        </div>
+        <div style="margin-top:1rem;padding:10px;background:var(--red-glow);border-radius:6px;font-size:11px;color:var(--text-secondary)">
+          <strong style="color:var(--red)">Temuan kunci:</strong> Publik tidak menolak gizi anak — kritik terfokus pada <em>arsitektur keadilan pembiayaan</em> dan <em>inkompetensi manajerial BGN</em>.
+        </div>
+      </div>
+      <div id="tab-radar" class="tab-panel">
+        <div class="chart-wrap" style="height:280px">
+          <canvas id="sentimentRadar"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Timeline -->
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Timeline Kejadian Kritis MBG</span>
+        <span class="panel-badge badge-amber">2024 – MAR 2026</span>
+      </div>
+      <div class="panel-body">
+        <div class="timeline">
+          <div class="timeline-item green">
+            <div class="timeline-date">Okt 2024</div>
+            <div class="timeline-event"><strong>Perpres No. 83/2024</strong> — Pembentukan Badan Gizi Nasional (BGN) sebagai lembaga baru pengelola MBG</div>
+          </div>
+          <div class="timeline-item green">
+            <div class="timeline-date">2 Jan 2025</div>
+            <div class="timeline-event"><strong>Kick-off MBG</strong> — Program resmi diluncurkan. Target awal 3 juta penerima, ekspansi masif mulai berjalan</div>
+          </div>
+          <div class="timeline-item amber">
+            <div class="timeline-date">Jul–Sep 2025</div>
+            <div class="timeline-event"><strong>Analisis sentimen publik</strong> — Riset IndoBERTweet J-PTIIK Unibraw merekam 1.512 tweet, 8 klaster diskursus masyarakat terbentuk</div>
+          </div>
+          <div class="timeline-item red">
+            <div class="timeline-date">Mid 2025</div>
+            <div class="timeline-event"><strong>Keracunan massal pertama</strong> — SD Muhammadiyah & TK Faturahman, Riau. Presiden Prabowo panggil 6 kementerian</div>
+          </div>
+          <div class="timeline-item amber">
+            <div class="timeline-date">20 Jan 2026</div>
+            <div class="timeline-event"><strong>Kepala BGN Dadan Hindayana</strong> merilis data: 61.857 supplier aktif, 25.082 SPPG beroperasi di seluruh Indonesia</div>
+          </div>
+          <div class="timeline-item red">
+            <div class="timeline-date">Awal 2026</div>
+            <div class="timeline-event"><strong>Laporan ICW "Ada Siapa di Balik MBG?"</strong> — Identifikasi Letjen TNI aktif & jaringan relawan politik dominasi kontrak MBG miliaran rupiah</div>
+          </div>
+          <div class="timeline-item red">
+            <div class="timeline-date">Feb 2026</div>
+            <div class="timeline-event"><strong>Gugatan MK</strong> — MBG Watch, P2G, Celios ajukan judicial review UU APBN 2026 Pasal 22; tenggat perbaikan permohonan 25 Feb 2026</div>
+          </div>
+          <div class="timeline-item amber">
+            <div class="timeline-date">9 Mar 2026</div>
+            <div class="timeline-event"><strong>Realisasi 2026 Rp 44T</strong> (13.1% dari pagu Rp 335T). Total kumulatif terealisasi: <strong>Rp 96.9 Triliun</strong></div>
+          </div>
+          <div class="timeline-item red">
+            <div class="timeline-date">11 Mar 2026</div>
+            <div class="timeline-event"><strong>BGN tangguhkan 1.512 dapur SPPG di Jawa</strong> — 1.043 tanpa SLHS, 443 tanpa IPAL, 175 tanpa fasilitas mess ahli gizi</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ROW: Education Budget Impact + Governance -->
+  <div class="section-label" style="margin-top:2rem">06 — Dampak Anggaran Pendidikan & Tata Kelola Kelembagaan</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.3s">
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Komposisi Anggaran Pendidikan APBN 2026</span>
+        <span class="panel-badge badge-red">DISPUTED · SIDANG MK</span>
+      </div>
+      <div class="panel-body">
+        <div class="chart-wrap" style="height:220px">
+          <canvas id="educationChart"></canvas>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="stat-row">
+            <span class="stat-row-label">Total Klaim Anggaran Fungsi Pendidikan</span>
+            <span class="stat-row-value">Rp 769 Triliun</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-row-label">Anggaran MBG yang diklasifikasikan ke Pendidikan</span>
+            <span class="stat-row-value" style="color:var(--red)">Rp 268 Triliun</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-row-label">Anggaran Pendidikan Riil (tanpa MBG)</span>
+            <span class="stat-row-value" style="color:var(--amber)">~Rp 501 Triliun (~11.9%)</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-row-label">Kemendikdasmen — dipangkas</span>
+            <span class="stat-row-value" style="color:var(--red)">Rp 33.5T → Rp 26.3T</span>
+          </div>
+          <div class="stat-row">
+            <span class="stat-row-label">Kemendikti — dipangkas</span>
+            <span class="stat-row-value" style="color:var(--red)">Rp 57.7T → Rp 43T</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Keterlibatan Institusi Keamanan dalam Rantai Pasok</span>
+        <span class="panel-badge badge-red">ICW INVESTIGASI 2026</span>
+      </div>
+      <div class="panel-body">
+        <table class="data-table">
+          <thead>
+            <tr><th>Aktor</th><th>Jabatan/Afiliasi</th><th>Status</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Letjen TNI AD Rui Fernando Guedes</td>
+              <td style="font-size:11px">Irjen Kemenhan (Aktif)</td>
+              <td><span class="panel-badge badge-red">AKTIF</span></td>
+            </tr>
+            <tr>
+              <td>Mayjen TNI AD Eddy Syahputra Siahaan</td>
+              <td style="font-size:11px">Komisaris PT Len Industri (Purnawirawan)</td>
+              <td><span class="panel-badge badge-amber">PURNA</span></td>
+            </tr>
+            <tr>
+              <td>Brigjen TNI Anas Djoko Setiadji</td>
+              <td style="font-size:11px">Yayasan Mitra MBG (Purnawirawan)</td>
+              <td><span class="panel-badge badge-amber">PURNA</span></td>
+            </tr>
+            <tr>
+              <td>Letjen TNI Tri Budi Utomo</td>
+              <td style="font-size:11px">Sekjen Kemenhan (Aktif)</td>
+              <td><span class="panel-badge badge-red">AKTIF</span></td>
+            </tr>
+            <tr>
+              <td>Polri / Kemala Bhayangkari</td>
+              <td style="font-size:11px">Mengelola 1.179 dapur SPPG</td>
+              <td><span class="panel-badge badge-red">CONFLICT</span></td>
+            </tr>
+            <tr>
+              <td>Relawan Setia Jokowi / Badan Relawan Prabowo</td>
+              <td style="font-size:11px">Afiliasi jaringan distribusi daerah</td>
+              <td><span class="panel-badge badge-amber">POLITIS</span></td>
+            </tr>
+          </tbody>
+        </table>
+        <div style="margin-top:1rem;padding:10px;background:var(--red-glow);border:1px solid rgba(255,77,109,0.15);border-radius:6px;font-size:11px;color:var(--text-secondary);line-height:1.6">
+          <strong style="color:var(--red)">Analisis ICW:</strong> MBG terindikasi bermutasi dari instrumen pengentasan stunting menjadi <em>political patronage</em> — bagi-bagi kue ekonomi bagi elit pendukung penguasa. KPK diminta masuk melakukan pengawasan ekstensif terhadap BGN.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Economic Impact -->
+  <div class="section-label" style="margin-top:2rem">07 — Dampak Ekonomi & Rekomendasi Strategis</div>
+  <div class="panel-grid cols-2 fade-in" style="animation-delay:0.35s">
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Dampak Ekonomi Positif & Multiplier Effect</span>
+        <span class="panel-badge badge-green">AKAR RUMPUT</span>
+      </div>
+      <div class="panel-body">
+        <div class="stat-row">
+          <span class="stat-row-label">Penghematan uang saku siswa (estimasi per hari)</span>
+          <span class="stat-row-value" style="color:var(--green)">Rp 15.000/anak</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Total penyerapan tenaga kerja logistik (est.)</span>
+          <span class="stat-row-value" style="color:var(--green)">~75.000+ pekerja</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">UMKM & perorangan pemasok lokal aktif</span>
+          <span class="stat-row-value" style="color:var(--green)">53.612 entitas</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Injeksi likuiditas ke pasar lokal (kumulatif)</span>
+          <span class="stat-row-value" style="color:var(--green)">Rp 96.9 Triliun</span>
+        </div>
+        <div class="stat-row">
+          <span class="stat-row-label">Dapur SPPG aktif beroperasi (pasca-penangguhan)</span>
+          <span class="stat-row-value" style="color:var(--amber)">~23.570 unit</span>
+        </div>
+        <div style="margin-top:1rem">
+          <div class="chart-wrap" style="height:160px">
+            <canvas id="economicChart"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="panel-header">
+        <span class="panel-title">Rekomendasi Sistemik — Pakar & Lembaga</span>
+        <span class="panel-badge badge-blue">POLICY BRIEF</span>
+      </div>
+      <div class="panel-body">
+        <div style="display:flex;flex-direction:column;gap:0.75rem">
+          <div style="padding:10px 12px;background:var(--bg-panel);border-left:3px solid var(--green);border-radius:0 6px 6px 0">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--green);letter-spacing:0.1em;margin-bottom:4px">DESENTRALISASI</div>
+            <div style="font-size:12px;color:var(--text-secondary)">Kembalikan kewenangan rantai pasok ke komite sekolah & pemda otonom — tanpa perantara elit politik/militer urban</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--bg-panel);border-left:3px solid var(--amber);border-radius:0 6px 6px 0">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--amber);letter-spacing:0.1em;margin-bottom:4px">AUDIT INDEPENDEN</div>
+            <div style="font-size:12px;color:var(--text-secondary)">Bentuk dewan panel keamanan pangan independen per provinsi — sertifikasi ISO harian, tim ahli gizi + sanitarian + epidemiolog</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--bg-panel);border-left:3px solid var(--red);border-radius:0 6px 6px 0">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--red);letter-spacing:0.1em;margin-bottom:4px">REFORMASI FISKAL</div>
+            <div style="font-size:12px;color:var(--text-secondary)">Pisahkan nomenklatur MBG dari pos anggaran pendidikan — pastikan tidak menganibalisasi mandatory spending Pasal 31 UUD'45</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--bg-panel);border-left:3px solid var(--blue);border-radius:0 6px 6px 0">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--blue);letter-spacing:0.1em;margin-bottom:4px">DEKOOPTASI APARAT</div>
+            <div style="font-size:12px;color:var(--text-secondary)">Batasi keterlibatan TNI/Polri hanya untuk distribusi darurat kawasan 3T (Terdepan, Terluar, Tertinggal) seperti Nabire</div>
+          </div>
+          <div style="padding:10px 12px;background:var(--bg-panel);border-left:3px solid var(--purple);border-radius:0 6px 6px 0">
+            <div style="font-family:var(--mono);font-size:9px;color:var(--purple);letter-spacing:0.1em;margin-bottom:4px">PEMBAYARAN REAL-TIME</div>
+            <div style="font-size:12px;color:var(--text-secondary)">Implementasi sistem pembayaran digital real-time ke supplier UMKM — cegah gagal bayar yayasan perantara seperti kasus Kalibata</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-wrap -->
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-sources">
+    <div style="color:var(--text-secondary);margin-bottom:6px;font-size:11px">⚠ DISCLAIMER: SELURUH DATA & INFORMASI BERSUMBER DARI INTERNET. TIDAK ADA DATA PRIMER YANG DIKUMPULKAN SECARA MANDIRI.</div>
+    <div><strong style="color:var(--text-secondary)">SUMBER DATA:</strong></div>
+    <div>· Badan Gizi Nasional (BGN) — bgn.go.id · Kementerian Keuangan RI — kemenkeu.go.id</div>
+    <div>· Indonesia Corruption Watch (ICW) — antikorupsi.org · Komisi Pemberantasan Korupsi (KPK) — kpk.go.id</div>
+    <div>· Celios Think-Tank · Perhimpunan Pendidikan dan Guru (P2G) · MBG Watch Coalition</div>
+    <div>· Jurnal J-PTIIK Universitas Brawijaya Vol.10 No.4 Feb 2026 (Candra Setiawan dkk.) — IndoBERTweet Sentiment Analysis</div>
+    <div>· Badan Pusat Statistik (BPS) · Mahkamah Konstitusi RI · Media: Kompas, Tempo, CNN Indonesia, Detik.com</div>
+    <div style="margin-top:6px;color:var(--text-dim)">Dashboard ini bersifat analitik dan tidak berafiliasi dengan pemerintah. Data diverifikasi per 15 Maret 2026.</div>
+  </div>
+  <div style="text-align:right">
+    <div style="color:var(--green);margin-bottom:4px">MBG INTEL DASHBOARD</div>
+    <div>v1.0.0 · masriyan.github.io/mbg-dashboard</div>
+    <div style="color:var(--text-dim);margin-top:4px">Built with open-source data</div>
+  </div>
+</footer>
+
+<script>
+// ─── CHART.JS GLOBAL DEFAULTS ───
+Chart.defaults.color = '#6a95b0';
+Chart.defaults.borderColor = '#1a3040';
+Chart.defaults.font.family = "'Space Mono', monospace";
+Chart.defaults.font.size = 10;
+
+const GREEN = '#00e5a0', AMBER = '#f5a623', RED = '#ff4d6d', BLUE = '#38bdf8', PURPLE = '#a78bfa';
+const GREEN_A = 'rgba(0,229,160,0.15)', AMBER_A = 'rgba(245,166,35,0.15)', RED_A = 'rgba(255,77,109,0.15)', BLUE_A = 'rgba(56,189,248,0.15)';
+
+// ─── BUDGET CHART ───
+new Chart(document.getElementById('budgetChart'), {
+  type: 'bar',
+  data: {
+    labels: ['APBN 2025 — Pagu', 'APBN 2025 — Realisasi', 'APBN 2026 — Pagu', 'APBN 2026 — Realisasi (Q1)'],
+    datasets: [{
+      data: [71, 52.9, 335, 44],
+      backgroundColor: [BLUE_A, GREEN_A, AMBER_A, GREEN_A],
+      borderColor: [BLUE, GREEN, AMBER, GREEN],
+      borderWidth: 1.5,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false }, tooltip: {
+      callbacks: { label: ctx => ` Rp ${ctx.raw}T` }
+    }},
+    scales: {
+      x: { grid: { color: '#0d1820' }, ticks: { maxRotation: 30, font: { size: 9 } } },
+      y: { grid: { color: '#0d1820' }, ticks: { callback: v => `Rp ${v}T` } }
+    }
+  }
+});
+
+// ─── BENEFICIARY DOUGHNUT ───
+new Chart(document.getElementById('beneficiaryChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Peserta Didik (PAUD–SMA + Pesantren)', 'Ibu Hamil & Menyusui', 'Balita', 'Lansia'],
+    datasets: [{
+      data: [50.0, 4.5, 3.5, 2.5, 1.12],
+      backgroundColor: [GREEN_A, BLUE_A, AMBER_A, RED_A],
+      borderColor: [GREEN, BLUE, AMBER, RED],
+      borderWidth: 1.5,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '68%',
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 9 } } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw} Juta` } }
+    }
+  }
+});
+
+// ─── SUPPLIER PIE ───
+new Chart(document.getElementById('supplierChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['UMKM (26.899)', 'Perorangan (26.713)', 'Koperasi (7.098)', 'BUMDes & Lainnya (1.147)'],
+    datasets: [{
+      data: [26899, 26713, 7098, 1147],
+      backgroundColor: [GREEN_A, BLUE_A, AMBER_A, RED_A],
+      borderColor: [GREEN, BLUE, AMBER, RED],
+      borderWidth: 1.5,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '60%',
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10, font: { size: 9 } } },
+      tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw.toLocaleString()}` } }
+    }
+  }
+});
+
+// ─── COMPLIANCE HORIZONTAL BAR ───
+new Chart(document.getElementById('complianceChart'), {
+  type: 'bar',
+  data: {
+    labels: ['Tanpa Sertifikat SLHS', 'Tanpa Instalasi IPAL', 'Tanpa Mess Ahli Gizi'],
+    datasets: [{
+      label: 'Jumlah SPPG Bermasalah',
+      data: [1043, 443, 175],
+      backgroundColor: [RED_A, AMBER_A, BLUE_A],
+      borderColor: [RED, AMBER, BLUE],
+      borderWidth: 1.5,
+      borderRadius: 4,
+    }]
+  },
+  options: {
+    indexAxis: 'y',
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { display: false } },
+    scales: {
+      x: { grid: { color: '#0d1820' }, ticks: { callback: v => v.toLocaleString() } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+
+// ─── EDUCATION BUDGET PIE ───
+new Chart(document.getElementById('educationChart'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Anggaran MBG (diklasifikasikan ke Pendidikan)', 'Pendidikan Riil (tanpa MBG)'],
+    datasets: [{
+      data: [268, 501],
+      backgroundColor: [RED_A, GREEN_A],
+      borderColor: [RED, GREEN],
+      borderWidth: 1.5,
+      hoverOffset: 6
+    }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    cutout: '62%',
+    plugins: {
+      legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 9 } } },
+      tooltip: { callbacks: { label: ctx => ` Rp ${ctx.raw}T` } }
+    }
+  }
+});
+
+// ─── SENTIMENT RADAR ───
+new Chart(document.getElementById('sentimentRadar'), {
+  type: 'radar',
+  data: {
+    labels: ['Dukungan Gizi', 'Dukungan Politis', 'Ekonomi UMKM', 'Pemerataan Papua', 'Keracunan/Higiene', 'Beban Fiskal/PPN', 'Pendidikan/Guru', 'Anggaran Rp10K/porsi'],
+    datasets: [
+      {
+        label: 'Sentimen PRO',
+        data: [85, 70, 75, 60, 0, 0, 0, 0],
+        backgroundColor: 'rgba(0,229,160,0.08)',
+        borderColor: GREEN,
+        borderWidth: 1.5,
+        pointBackgroundColor: GREEN,
+        pointRadius: 3
+      },
+      {
+        label: 'Sentimen KONTRA',
+        data: [0, 0, 0, 0, 90, 75, 85, 80],
+        backgroundColor: 'rgba(255,77,109,0.08)',
+        borderColor: RED,
+        borderWidth: 1.5,
+        pointBackgroundColor: RED,
+        pointRadius: 3
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 12, font: { size: 9 } } } },
+    scales: {
+      r: {
+        grid: { color: '#1a3040' },
+        pointLabels: { font: { size: 9 } },
+        ticks: { display: false },
+        min: 0, max: 100
+      }
+    }
+  }
+});
+
+// ─── ECONOMIC IMPACT TREND ───
+new Chart(document.getElementById('economicChart'), {
+  type: 'line',
+  data: {
+    labels: ['Q1 2025', 'Q2 2025', 'Q3 2025', 'Q4 2025', 'Q1 2026 (Mar)'],
+    datasets: [
+      {
+        label: 'Dana Terealisasi (Kumulatif Rp T)',
+        data: [8, 22, 38, 52.9, 96.9],
+        borderColor: GREEN,
+        backgroundColor: GREEN_A,
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: GREEN,
+        pointRadius: 4
+      },
+      {
+        label: 'Penerima Manfaat (Juta Jiwa)',
+        data: [15, 30, 42, 50, 61.62],
+        borderColor: BLUE,
+        backgroundColor: BLUE_A,
+        borderWidth: 2,
+        tension: 0.4,
+        fill: true,
+        pointBackgroundColor: BLUE,
+        pointRadius: 4,
+        yAxisID: 'y1'
+      }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: false,
+    plugins: { legend: { position: 'bottom', labels: { boxWidth: 10, padding: 10, font: { size: 9 } } } },
+    scales: {
+      y: { grid: { color: '#0d1820' }, ticks: { callback: v => `Rp ${v}T` }, position: 'left' },
+      y1: { grid: { display: false }, ticks: { callback: v => `${v}Jt` }, position: 'right' },
+      x: { grid: { color: '#0d1820' } }
+    }
+  }
+});
+
+// ─── COUNTUP ANIMATION ───
+function animateCountUp(el) {
+  const target = parseFloat(el.dataset.target);
+  const suffix = el.dataset.suffix || '';
+  const duration = 1800;
+  const start = performance.now();
+  const isInt = Number.isInteger(target);
+
+  function update(now) {
+    const elapsed = now - start;
+    const progress = Math.min(elapsed / duration, 1);
+    const ease = 1 - Math.pow(1 - progress, 3);
+    const current = target * ease;
+    if (isInt || target > 100) {
+      el.textContent = Math.round(current).toLocaleString('id-ID') + suffix;
+    } else {
+      el.textContent = current.toFixed(2) + suffix;
+    }
+    if (progress < 1) requestAnimationFrame(update);
+    else el.textContent = (isInt || target > 100 ? Math.round(target).toLocaleString('id-ID') : target.toFixed(2)) + suffix;
+  }
+  requestAnimationFrame(update);
+}
+
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.querySelectorAll('.countup').forEach(animateCountUp);
+      observer.unobserve(e.target);
+    }
+  });
+}, { threshold: 0.3 });
+
+document.querySelectorAll('.kpi-grid').forEach(el => observer.observe(el));
+
+// ─── TABS ───
+function switchTab(btn, id) {
+  const panel = btn.closest('.panel');
+  panel.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  panel.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// ─── ANIMATE PROGRESS BARS ON LOAD ───
+window.addEventListener('load', () => {
+  document.querySelectorAll('.progress-fill').forEach(el => {
+    const w = el.style.width;
+    el.style.width = '0';
+    setTimeout(() => { el.style.width = w; }, 300);
+  });
+});
+</script>
+</body>
+</html>
